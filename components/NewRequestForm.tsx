@@ -6,12 +6,21 @@ import { SupportUser } from "@/types";
 
 type FormAction = (formData: FormData) => void | Promise<void>;
 
-export default function NewRequestForm({ action }: { action?: FormAction }) {
+export default function NewRequestForm({
+  action,
+  supportUsers: initialSupportUsers
+}: {
+  action?: FormAction;
+  supportUsers?: SupportUser[];
+}) {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const createdAtRef = useRef<HTMLInputElement | null>(null);
-  const [supportUsers, setSupportUsers] = useState<SupportUser[]>([]);
+  // use server-provided users as initial state
+  const [supportUsers, setSupportUsers] = useState<SupportUser[]>(
+    initialSupportUsers ?? []
+  );
   const [selectedSupport, setSelectedSupport] = useState<string>("");
 
   // Set createdAt to current local datetime with timezone offset on mount
@@ -24,46 +33,49 @@ export default function NewRequestForm({ action }: { action?: FormAction }) {
     const dd = pad(d.getDate());
     const hh = pad(d.getHours());
     const min = pad(d.getMinutes());
-    const localIsoWithOffset = `${yyyy}-${mm}-${dd} / ${hh}:${min}`;
+    const localIsoWithOffset = `${yyyy}-${mm}-${dd}T${hh}:${min}:00${formatOffset(
+      d
+    )}`;
     createdAtRef.current.value = localIsoWithOffset;
   }, []);
 
-  // fetch support users for the select
-  useEffect(() => {
-    let mounted = true;
-    fetch("/api/support-users")
-      .then((res) => {
-        if (!res.ok) throw new Error("failed to load support users");
-        return res.json();
-      })
-      .then((data: SupportUser[]) => {
-        if (mounted) setSupportUsers(data);
-      })
-      .catch(() => {
-        // silent fail — select will be hidden
-        setSupportUsers([]);
-      });
-
-    // cleanup
-    return () => {
-      mounted = false;
-    };
-  }, []);
+  // helper to format timezone offset like +02:00
+  function formatOffset(d: Date) {
+    const offset = -d.getTimezoneOffset();
+    const sign = offset >= 0 ? "+" : "-";
+    const abs = Math.abs(offset);
+    const hh = String(Math.floor(abs / 60)).padStart(2, "0");
+    const mm = String(abs % 60).padStart(2, "0");
+    return `${sign}${hh}:${mm}`;
+  }
 
   // Validate form fields
   const validate = () => {
-    const e = {};
-    if (!title.trim()) toast.error("El título es requerido");
-    if (title.trim().length > 150)
+    let ok = true;
+    if (!title.trim()) {
+      toast.error("El título es requerido");
+      ok = false;
+    }
+    if (title.trim().length > 150) {
       toast.error("El título es demasiado largo (máx. 150)");
-    if (!description.trim()) toast.error("La descripción es requerida");
-    if (description.trim().length > 5000)
+      ok = false;
+    }
+    if (!description.trim()) {
+      toast.error("La descripción es requerida");
+      ok = false;
+    }
+    if (description.trim().length > 5000) {
       toast.error("La descripción es demasiado larga");
-    if (!selectedSupport) toast.error("El soporte es requerido");
-
-    return Object.keys(e).length === 0;
+      ok = false;
+    }
+    if (!selectedSupport) {
+      toast.error("Debes seleccionar un usuario de soporte");
+      ok = false;
+    }
+    return ok;
   };
 
+  // Handle form submission
   const handleSubmitClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (!validate()) return;
