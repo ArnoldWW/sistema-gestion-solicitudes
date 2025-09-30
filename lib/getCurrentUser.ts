@@ -12,7 +12,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
   try {
     // Verify and decode the token
     const decoded = jwt.verify(session.value, SECRET_KEY) as SessionUser;
-    console.log(decoded);
+
     return decoded;
   } catch {
     return null;
