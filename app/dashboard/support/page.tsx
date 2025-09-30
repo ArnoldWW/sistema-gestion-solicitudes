@@ -106,7 +106,10 @@ export default async function SupportPage() {
                 </td>
 
                 <td className="px-6 py-4 whitespace-nowrap text-right space-x-2">
-                  <Link href={`#`} className="btn hover:no-underline">
+                  <Link
+                    href={`/dashboard/support/${row.id}`}
+                    className="btn hover:no-underline"
+                  >
                     Responder
                   </Link>
                 </td>

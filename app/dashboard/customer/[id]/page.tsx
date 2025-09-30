@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { db } from "@/lib/db";
 import type { RequestRow } from "@/types";
+import FormattedDate from "@/components/FormattedDate";
 
 type RequestDetailPageProps = {
   params: { id: string };
@@ -13,7 +14,7 @@ export default async function RequestDetailPage({
   const user = await getCurrentUser();
 
   // Query the request by ID
-  const { id } = params;
+  const { id } = await params;
   const res = await db.execute({
     sql: "SELECT * FROM requests WHERE id = ? LIMIT 1",
     args: [id]
@@ -65,7 +66,9 @@ export default async function RequestDetailPage({
       </Link>
 
       <h1 className="text-2xl font-bold mt-4">{row.title}</h1>
-      <p className="text-sm">Creado: {row.created_at}</p>
+      <p className="text-sm">
+        Creado: {row.created_at ? <FormattedDate iso={row.created_at} /> : "—"}
+      </p>
 
       <div className="mt-6 bg-white border border-gray-200 rounded p-4">
         <h3 className="font-bold">Descripción</h3>
@@ -87,7 +90,7 @@ export default async function RequestDetailPage({
           <div>
             <h4 className="font-bold">Última actualización</h4>
             <div className="mt-1 text-sm">
-              {row.updated_at || row.created_at}
+              {row.updated_at ? <FormattedDate iso={row.updated_at} /> : "—"}
             </div>
           </div>
         </div>
