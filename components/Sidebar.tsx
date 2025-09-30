@@ -41,8 +41,8 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
           )}
 
           <button
-            /* aria-expanded={open}
-            aria-label={open ? "Cerrar menú" : "Abrir menú"} */
+            aria-expanded={open}
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
             className="btn fixed top-4 right-4 p-2 z-50 text-xs bg-blue-500"
             onClick={toggleSidebar}
           >
