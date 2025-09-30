@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { db } from "@/lib/db";
+import type { RequestRow } from "@/types";
 
 export default async function SupportPage() {
   const user = await getCurrentUser();
@@ -33,7 +34,20 @@ export default async function SupportPage() {
     args: [user.id]
   });
 
-  const rows = result.rows || [];
+  const rawRows = result.rows || [];
+
+  const rows: RequestRow[] = (rawRows as any[]).map((r) => ({
+    id: String(r.id),
+    user_id: String(r.user_id),
+    user_name: r.user_name ?? r.name ?? null,
+    title: r.title ?? "",
+    description: r.description ?? null,
+    status: r.status ?? "",
+    response: r.response ?? null,
+    created_at: r.created_at ? String(r.created_at) : null,
+    updated_at: r.updated_at ? String(r.updated_at) : null,
+    support_id: r.support_id ? String(r.support_id) : null
+  }));
 
   if (rows.length === 0) {
     return (
@@ -71,7 +85,7 @@ export default async function SupportPage() {
           </thead>
 
           <tbody className="bg-white divide-y divide-gray-200">
-            {rows.map((row: any) => (
+            {rows.map((row: RequestRow) => (
               <tr key={row.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-gray-900">
                   {row.title}

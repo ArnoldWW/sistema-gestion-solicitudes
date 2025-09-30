@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { db } from "@/lib/db";
+import type { RequestRow } from "@/types";
 
 type RequestDetailPageProps = {
   params: { id: string };
@@ -12,13 +13,11 @@ export default async function RequestDetailPage({
   const user = await getCurrentUser();
 
   // Query the request by ID
-  const { id } = await params;
+  const { id } = params;
   const res = await db.execute({
     sql: "SELECT * FROM requests WHERE id = ? LIMIT 1",
     args: [id]
   });
-
-  console.log(res);
 
   if (!res || res.rows.length === 0) {
     return (
@@ -31,7 +30,20 @@ export default async function RequestDetailPage({
     );
   }
 
-  const row: any = res.rows[0];
+  const raw = res.rows[0] as any;
+
+  const row: RequestRow = {
+    id: String(raw.id),
+    user_id: raw.user_id ? String(raw.user_id) : "",
+    user_name: raw.user_name ?? null,
+    title: raw.title ?? "",
+    description: raw.description ?? null,
+    status: raw.status ?? "",
+    response: raw.response ?? null,
+    created_at: raw.created_at ? String(raw.created_at) : null,
+    updated_at: raw.updated_at ? String(raw.updated_at) : null,
+    support_id: raw.support_id ? String(raw.support_id) : null
+  };
 
   // Authorization: owners and admins can view
   if (user?.role !== "ADMIN" && row.user_id !== user?.id) {
