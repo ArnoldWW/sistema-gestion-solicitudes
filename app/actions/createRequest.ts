@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import { nanoid } from "nanoid";
 import { getCurrentUser } from "@/lib/getCurrentUser";
+import { redirect } from "next/navigation";
 
 export async function createRequest(formData: FormData) {
   try {
@@ -31,7 +32,10 @@ export async function createRequest(formData: FormData) {
   }
 }
 
-// Wrapper that returns void so it can be used as a form `action`
+// Wrapper that returns void
 export async function createRequestAction(formData: FormData): Promise<void> {
-  await createRequest(formData);
+  const result = await createRequest(formData);
+  if (result?.success && result.id) {
+    redirect("/dashboard/customer");
+  }
 }
