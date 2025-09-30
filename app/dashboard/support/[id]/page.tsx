@@ -24,7 +24,7 @@ export default async function SupportRequestDetail({
 
   const { id } = await params;
 
-  // fetch request
+  // fetch request by ID
   const res = await db.execute({
     sql: `SELECT r.id, r.user_id, u.name AS user_name, r.title, r.description, r.status, r.response, r.created_at, r.updated_at, r.support_id
           FROM requests r
