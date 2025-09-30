@@ -36,8 +36,8 @@ export async function registerUser(formData: {
     });
 
     return { success: true };
-  } catch (err: any) {
-    if (err?.message?.includes("UNIQUE")) {
+  } catch (err: unknown) {
+    if (err instanceof Error && err.message.includes("UNIQUE")) {
       return { success: false, error: "El email ya está registrado" };
     }
     return { success: false, error: "Error al registrar el usuario" };

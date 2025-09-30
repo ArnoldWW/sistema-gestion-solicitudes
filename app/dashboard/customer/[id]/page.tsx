@@ -5,16 +5,16 @@ import type { RequestRow } from "@/types";
 import FormattedDate from "@/components/FormattedDate";
 
 type RequestDetailPageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function RequestDetailPage({
   params
 }: RequestDetailPageProps) {
+  const { id } = await params;
   const user = await getCurrentUser();
 
   // Query the request by ID
-  const { id } = await params;
   const res = await db.execute({
     sql: "SELECT * FROM requests WHERE id = ? LIMIT 1",
     args: [id]

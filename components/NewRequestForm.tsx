@@ -18,9 +18,7 @@ export default function NewRequestForm({
   const [description, setDescription] = useState("");
   const createdAtRef = useRef<HTMLInputElement | null>(null);
   // use server-provided users as initial state
-  const [supportUsers, setSupportUsers] = useState<SupportUser[]>(
-    initialSupportUsers ?? []
-  );
+  const supportUsers = initialSupportUsers ?? [];
   const [selectedSupport, setSelectedSupport] = useState<string>("");
 
   // Set createdAt to current local datetime with timezone offset on mount

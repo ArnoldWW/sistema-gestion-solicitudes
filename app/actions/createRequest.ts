@@ -54,7 +54,7 @@ export async function createRequest(formData: FormData) {
     });
 
     return { success: true, id };
-  } catch (err: any) {
+  } catch (err) {
     console.error("createRequest error:", err);
     return { success: false, error: "Error al crear la solicitud" };
   }
