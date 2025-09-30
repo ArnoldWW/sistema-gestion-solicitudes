@@ -16,14 +16,14 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!email.trim() || !password.trim()) {
-      toast.error("Email y contraseña son requeridos");
+      toast.error("Correo y contraseña son requeridos");
       return;
     }
 
     // Client-side email validation
     const isValidEmail = (em: string) => /^[\w-.+]+@[\w-]+\.[\w.-]+$/.test(em);
     if (!isValidEmail(email.trim())) {
-      toast.error("Email inválido");
+      toast.error("Correo inválido");
       return;
     }
 

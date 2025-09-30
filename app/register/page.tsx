@@ -27,7 +27,7 @@ export default function RegisterPage() {
     // Client-side email validation
     const isValidEmail = (em: string) => /^[\w-.+]+@[\w-]+\.[\w.-]+$/.test(em);
     if (!isValidEmail(form.email)) {
-      toast.error("Email inválido");
+      toast.error("Correo inválido");
       return;
     }
 
