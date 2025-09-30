@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 const SECRET_KEY = process.env.JWT_SECRET || "super-secret-key";
 
@@ -12,9 +13,10 @@ export async function loginUser(email: string, password: string) {
       return { success: false, error: "Email y contraseña son requeridos" };
     }
 
+    // Fetch user by email and get hashed password
     const result = await db.execute({
-      sql: "SELECT id, name, email, role FROM users WHERE email = ? AND password = ? LIMIT 1",
-      args: [email, password]
+      sql: "SELECT id, name, email, role, password FROM users WHERE email = ? LIMIT 1",
+      args: [email]
     });
 
     if (result.rows.length === 0) {
@@ -22,6 +24,14 @@ export async function loginUser(email: string, password: string) {
     }
 
     const userRow = result.rows[0];
+    const hashedPassword = userRow.password as string;
+
+    // Compare provided password with hashed password
+    const passwordMatches = await bcrypt.compare(password, hashedPassword);
+    if (!passwordMatches) {
+      return { success: false, error: "Credenciales inválidas" };
+    }
+
     const userPayload = {
       id: userRow.id,
       name: userRow.name,
