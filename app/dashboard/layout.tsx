@@ -37,11 +37,7 @@ export default async function DashboardLayout({
           <h1>Gestion de solicitudes</h1>
           <nav className="flex flex-col mt-4 gap-4">
             {linksByRole[user.role].map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block p-2 border border-gray-200 rounded text-gray-700 hover:no-underline hover:bg-blue-500 hover:text-white transition"
-              >
+              <Link key={link.href} href={link.href}>
                 {link.label}
               </Link>
             ))}
