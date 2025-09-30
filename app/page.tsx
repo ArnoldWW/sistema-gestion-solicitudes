@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { loginUser } from "@/app/actions/loginUser";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,8 +15,15 @@ export default function LoginPage() {
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!email || !password) {
-      alert("Email y contraseña son requeridos");
+    if (!email.trim() || !password.trim()) {
+      toast.error("Email y contraseña son requeridos");
+      return;
+    }
+
+    // Client-side email validation
+    const isValidEmail = (em: string) => /^[\w-.+]+@[\w-]+\.[\w.-]+$/.test(em);
+    if (!isValidEmail(email.trim())) {
+      toast.error("Email inválido");
       return;
     }
 
@@ -29,7 +37,7 @@ export default function LoginPage() {
         }
 
         // Show success message
-        alert("Inicio de sesión exitoso");
+        toast.success("Inicio de sesión exitoso");
 
         // Redirect to dashboard
         if (res.user?.role === "CLIENTE") {
@@ -40,7 +48,7 @@ export default function LoginPage() {
           router.push("/dashboard/admin");
         }
       } catch (err) {
-        alert(err instanceof Error ? err.message : "Error desconocido");
+        toast.error(err instanceof Error ? err.message : "Error desconocido");
       }
     });
   }
@@ -73,7 +81,7 @@ export default function LoginPage() {
         <small>
           ¿No tienes cuenta?{" "}
           <Link href="/register" className="text-blue-500 underline">
-            Regístrate aquí
+            Crear usuario
           </Link>
         </small>
       </form>

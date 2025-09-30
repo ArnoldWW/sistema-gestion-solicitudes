@@ -10,6 +10,15 @@ export async function registerUser(formData: {
   password: string;
   role: string;
 }) {
+  // Validate email format on server
+  const isValidEmail = (email: string) => {
+    // simple but effective RFC-ish pattern
+    return /^[\w-.+]+@[\w-]+\.[\w.-]+$/.test(email);
+  };
+
+  if (!isValidEmail(formData.email)) {
+    return { success: false, error: "Email inválido" };
+  }
   try {
     // Hash the password before saving
     const saltRounds = 10;

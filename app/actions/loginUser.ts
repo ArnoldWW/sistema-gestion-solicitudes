@@ -13,6 +13,12 @@ export async function loginUser(email: string, password: string) {
       return { success: false, error: "Email y contraseña son requeridos" };
     }
 
+    // Basic server-side email format validation
+    const isValidEmail = (em: string) => /^[\w-.+]+@[\w-]+\.[\w.-]+$/.test(em);
+    if (!isValidEmail(email)) {
+      return { success: false, error: "Email inválido" };
+    }
+
     // Fetch user by email and get hashed password
     const result = await db.execute({
       sql: "SELECT id, name, email, role, password FROM users WHERE email = ? LIMIT 1",

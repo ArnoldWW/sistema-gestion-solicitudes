@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { registerUser } from "@/app/actions/registerUser";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -18,6 +19,18 @@ export default function RegisterPage() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
+    if (!form.name || !form.email || !form.password || !form.role) {
+      toast.error("Todos los campos son requeridos");
+      return;
+    }
+
+    // Client-side email validation
+    const isValidEmail = (em: string) => /^[\w-.+]+@[\w-]+\.[\w.-]+$/.test(em);
+    if (!isValidEmail(form.email)) {
+      toast.error("Email inválido");
+      return;
+    }
+
     startTransition(async () => {
       try {
         const res = await registerUser(form);
@@ -26,15 +39,15 @@ export default function RegisterPage() {
         }
 
         // Show success message
-        alert("Registro exitoso");
+        toast.success("Registro exitoso");
 
         // Redirect to login page
         router.push("/");
       } catch (error) {
         if (error instanceof Error) {
-          alert(error.message);
+          toast.error(error.message);
         } else {
-          alert("Error desconocido");
+          toast.error("Error desconocido");
         }
       }
     });
@@ -79,7 +92,7 @@ export default function RegisterPage() {
         </select>
 
         <button type="submit" disabled={isPending} className="btn">
-          {isPending ? "Registrando..." : "Registrarse"}
+          {isPending ? "Creando..." : "Crear usuario"}
         </button>
         <small>
           ¿Ya tienes cuenta? <Link href="/">Inicia sesión aquí</Link>
