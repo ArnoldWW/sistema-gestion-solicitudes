@@ -8,8 +8,8 @@ import Link from "next/link";
 
 const linksByRole: Record<Role, SidebarLink[]> = {
   CLIENTE: [
-    { href: "/dashboard/client", label: "Mis Solicitudes" },
-    { href: "/dashboard/client/new", label: "Nueva Solicitud" }
+    { href: "/dashboard/customer", label: "Mis Solicitudes" },
+    { href: "/dashboard/customer/new", label: "Nueva Solicitud" }
   ],
   SOPORTE: [{ href: "/dashboard/support", label: "Solicitudes Asignadas" }],
   ADMIN: [
@@ -35,11 +35,16 @@ export default async function DashboardLayout({
       <Sidebar>
         <div>
           <h1>Gestion de solicitudes</h1>
-          <nav>
-            <Link href="/dashboard/customer">Link</Link>
-            <Link href="/dashboard/support">Link</Link>
-            <Link href="/dashboard/admin">Link</Link>
-            <Link href="/dashboard/settings">Link</Link>
+          <nav className="flex flex-col mt-4 gap-4">
+            {linksByRole[user.role].map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="block p-2 border border-gray-200 rounded text-gray-700 hover:no-underline hover:bg-blue-500 hover:text-white transition"
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
         </div>
 
