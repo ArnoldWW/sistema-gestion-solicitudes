@@ -47,7 +47,7 @@ export default async function RequestDetailPage({
   }
 
   return (
-    <div className="p-6">
+    <div>
       <Link href="/dashboard/customer" className="text-sm">
         &larr; Volver a mis solicitudes
       </Link>
