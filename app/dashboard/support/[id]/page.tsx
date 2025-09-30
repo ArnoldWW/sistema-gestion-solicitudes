@@ -6,7 +6,7 @@ import { respondRequestAction } from "@/app/actions/respondRequest";
 import FormattedDate from "@/components/FormattedDate";
 
 type SupportRequestDetailProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function SupportRequestDetail({
