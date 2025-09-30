@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { registerUser } from "@/app/actions/registerUser";
+import Link from "next/link";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -18,26 +19,38 @@ export default function RegisterPage() {
     e.preventDefault();
 
     startTransition(async () => {
-      const res = await registerUser(form);
-      if (res.success) {
+      try {
+        const res = await registerUser(form);
+        if (!res.success) {
+          throw new Error(res.error);
+        }
+
+        // Show success message
         alert("Registro exitoso");
+
+        // Redirect to login page
         router.push("/");
-      } else {
-        alert(res.error);
+      } catch (error) {
+        if (error instanceof Error) {
+          alert(error.message);
+        } else {
+          alert("Error desconocido");
+        }
       }
     });
   }
 
   return (
-    <main>
-      <form onSubmit={handleSubmit}>
-        <h1>Registro</h1>
+    <main className="flex items-center justify-center min-h-screen">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold text-center">Crear usuario</h1>
 
         <input
           type="text"
           placeholder="Nombre"
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
+          className="input"
         />
 
         <input
@@ -45,6 +58,7 @@ export default function RegisterPage() {
           placeholder="Correo"
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
+          className="input"
         />
 
         <input
@@ -52,6 +66,7 @@ export default function RegisterPage() {
           placeholder="Contraseña"
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
+          className="input"
         />
 
         <select
@@ -63,9 +78,12 @@ export default function RegisterPage() {
           <option value="ADMIN">Administrador</option>
         </select>
 
-        <button type="submit" disabled={isPending}>
+        <button type="submit" disabled={isPending} className="btn">
           {isPending ? "Registrando..." : "Registrarse"}
         </button>
+        <small>
+          ¿Ya tienes cuenta? <Link href="/">Inicia sesión aquí</Link>
+        </small>
       </form>
     </main>
   );

@@ -2,6 +2,7 @@
 
 import { db } from "@/lib/db";
 import { nanoid } from "nanoid";
+import { redirect } from "next/navigation";
 
 export async function registerUser(formData: {
   name: string;

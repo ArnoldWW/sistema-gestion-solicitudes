@@ -1,1 +1,28 @@
-/* @import "tailwindcss"; */
+@import "tailwindcss";
+
+@layer base {
+  h1 {
+    @apply font-bold text-2xl;
+  }
+  h2 {
+    @apply font-bold text-xl;
+  }
+  h3 {
+    @apply font-bold text-lg;
+  }
+  select {
+    @apply border border-gray-300 p-2 rounded;
+  }
+  input {
+    @apply border border-gray-300 p-2 rounded;
+  }
+  a {
+    @apply text-blue-500 hover:underline;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply bg-blue-500 text-white p-2 rounded hover:bg-blue-600 disabled:bg-gray-400 cursor-pointer;
+  }
+}
