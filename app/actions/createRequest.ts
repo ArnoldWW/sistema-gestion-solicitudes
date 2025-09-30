@@ -20,9 +20,22 @@ export async function createRequest(formData: FormData) {
 
     const id = nanoid();
 
+    // Prefer client-provided local datetime (ISO with offset) if present
+    const createdAtClient = formData.get("created_at_local")?.toString();
+    const createdAt = createdAtClient ?? new Date().toISOString(); // fallback UTC
+
     await db.execute({
-      sql: "INSERT INTO requests (id, user_id, title, description, status, response) VALUES (?, ?, ?, ?, ?, ?)",
-      args: [id, user.id, title, description, "Abierto", null]
+      sql: "INSERT INTO requests (id, user_id, title, description, status, response, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      args: [
+        id,
+        user.id,
+        title,
+        description,
+        "Abierto",
+        null,
+        createdAt,
+        createdAt
+      ]
     });
 
     return { success: true, id };

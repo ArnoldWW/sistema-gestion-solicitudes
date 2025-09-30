@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 type FormAction = (formData: FormData) => void | Promise<void>;
@@ -9,6 +9,21 @@ export default function NewRequestForm({ action }: { action?: FormAction }) {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const createdAtRef = useRef<HTMLInputElement | null>(null);
+
+  // Set createdAt to current local datetime with timezone offset on mount
+  useEffect(() => {
+    if (!createdAtRef.current) return;
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const yyyy = d.getFullYear();
+    const mm = pad(d.getMonth() + 1);
+    const dd = pad(d.getDate());
+    const hh = pad(d.getHours());
+    const min = pad(d.getMinutes());
+    const localIsoWithOffset = `${yyyy}-${mm}-${dd} / ${hh}:${min}`;
+    createdAtRef.current.value = localIsoWithOffset;
+  }, []);
 
   const validate = () => {
     const e = {};
@@ -36,6 +51,7 @@ export default function NewRequestForm({ action }: { action?: FormAction }) {
       action={action}
       className="flex flex-col gap-4 mt-4 max-w-1/2"
     >
+      <input type="hidden" name="created_at_local" ref={createdAtRef} />
       <input
         name="title"
         value={title}
