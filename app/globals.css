@@ -11,13 +11,16 @@
     @apply font-bold text-lg;
   }
   select {
-    @apply border border-gray-300 p-2 rounded;
+    @apply border border-gray-200 p-2 rounded;
   }
   input {
-    @apply border border-gray-300 p-2 rounded;
+    @apply border border-gray-200 p-2 rounded;
   }
   a {
     @apply text-blue-500 hover:underline;
+  }
+  textarea {
+    @apply border border-gray-200 p-2 rounded;
   }
 }
 
