@@ -20,12 +20,26 @@ export async function createRequest(formData: FormData) {
 
     const id = nanoid();
 
+    // Support id optional, validate exists and role is SOPORTE
+    let supportId = formData.get("support_id")?.toString() || null;
+
+    const check = await db.execute({
+      sql: "SELECT id, role FROM users WHERE id = ? LIMIT 1",
+      args: [supportId]
+    });
+    if (!check.rows.length || check.rows[0].role !== "SOPORTE") {
+      // invalid support id -> ignore (or return error)
+      supportId = null;
+    }
+
     // Prefer client-provided local datetime (ISO with offset) if present
     const createdAtClient = formData.get("created_at_local")?.toString();
     const createdAt = createdAtClient ?? new Date().toISOString(); // fallback UTC
 
     await db.execute({
-      sql: "INSERT INTO requests (id, user_id, title, description, status, response, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      sql: `INSERT INTO requests
+            (id, user_id, title, description, status, response, created_at, updated_at, support_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       args: [
         id,
         user.id,
@@ -34,7 +48,8 @@ export async function createRequest(formData: FormData) {
         "Abierto",
         null,
         createdAt,
-        createdAt
+        createdAt,
+        supportId
       ]
     });
 

@@ -22,6 +22,9 @@
   textarea {
     @apply border border-gray-200 p-2 rounded;
   }
+  label {
+    @apply text-sm font-bold;
+  }
 }
 
 @layer components {

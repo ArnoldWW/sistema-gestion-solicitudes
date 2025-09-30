@@ -13,3 +13,9 @@ export type SessionUser = {
   iat: number;
   exp: number;
 };
+
+export type SupportUser = {
+  id: string;
+  name: string;
+  email: string;
+};

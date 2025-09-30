@@ -11,19 +11,15 @@ export default async function RequestDetailPage({
 }: RequestDetailPageProps) {
   const user = await getCurrentUser();
 
-  if (!user)
-    return (
-      <div className="p-6">
-        <h2>No autenticado</h2>
-      </div>
-    );
-
-  // Query the solicitud
+  // Query the request by ID
   const { id } = await params;
   const res = await db.execute({
     sql: "SELECT * FROM requests WHERE id = ? LIMIT 1",
     args: [id]
   });
+
+  console.log(res);
+
   if (!res || res.rows.length === 0) {
     return (
       <div className="p-6">
@@ -38,7 +34,7 @@ export default async function RequestDetailPage({
   const row: any = res.rows[0];
 
   // Authorization: owners and admins can view
-  if (user.role !== "ADMIN" && row.user_id !== user.id) {
+  if (user?.role !== "ADMIN" && row.user_id !== user?.id) {
     return (
       <div className="p-6">
         <h2>No autorizado</h2>
