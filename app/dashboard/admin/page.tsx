@@ -1,5 +1,6 @@
 import React from "react";
 import { db } from "@/lib/db";
+import StatsCharts from "@/components/StatsCharts";
 
 async function getUserStats() {
   const result = await db.execute({
@@ -18,15 +19,29 @@ async function getRequestStats() {
 }
 
 export default async function AdminPage() {
-  const userStats = await getUserStats();
-  const requestStats = await getRequestStats();
+  const rawUserStats = await getUserStats();
+  const rawRequestStats = await getRequestStats();
+
+  // Plain objects nuevos para pasar a client component
+  const userStats = rawUserStats.map((stat) => ({
+    role: stat.role,
+    count: stat.count
+  }));
+  const requestStats = rawRequestStats.map((stat) => ({
+    status: stat.status,
+    count: stat.count
+  }));
+
+  // Convertir a JSON strings para pasar a client component
+  const userStatsJson = JSON.stringify(userStats);
+  const requestStatsJson = JSON.stringify(requestStats);
 
   return (
     <>
       <h2 className="text-2xl font-bold mb-4">Panel de Administrador</h2>
       <p className="mb-6">Estadísticas generales del sistema</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8 mt-8">
         <h3 className="text-xl font-semibold col-span-full mb-2">
           Usuarios Registrados por Rol
         </h3>
@@ -49,6 +64,10 @@ export default async function AdminPage() {
           </div>
         ))}
       </div>
+      <StatsCharts
+        userStatsJson={userStatsJson}
+        requestStatsJson={requestStatsJson}
+      />
     </>
   );
 }
