@@ -22,7 +22,7 @@ export async function loginUser(email: string, password: string) {
 
     // Fetch user by email and get hashed password
     const result = await db.execute({
-      sql: "SELECT id, name, email, role, password FROM users WHERE email = ? LIMIT 1",
+      sql: "SELECT id, name, email, role, password, banned FROM users WHERE email = ? LIMIT 1",
       args: [email]
     });
 
@@ -37,6 +37,11 @@ export async function loginUser(email: string, password: string) {
     const passwordMatches = await bcrypt.compare(password, hashedPassword);
     if (!passwordMatches) {
       return { success: false, error: "Credenciales inválidas" };
+    }
+
+    // Check if user is banned
+    if (userRow.banned === 1) {
+      return { success: false, error: "Cuenta baneada" };
     }
 
     const userPayload = {

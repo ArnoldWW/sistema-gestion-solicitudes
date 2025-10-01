@@ -1,8 +1,9 @@
 import React from "react";
 import { db } from "@/lib/db";
+import { banUser } from "@/app/actions/banUser";
 
 async function getAllUsers(role?: string) {
-  let sql = "SELECT id, name, email, role FROM users";
+  let sql = "SELECT id, name, email, role, banned FROM users";
   const args: string[] = [];
 
   if (role && role !== "TODOS") {
@@ -16,6 +17,7 @@ async function getAllUsers(role?: string) {
     name: string;
     email: string;
     role: string;
+    banned: number;
   }[];
 }
 
@@ -76,7 +78,19 @@ export default async function UsersAdminPage({
               <h3>{user.name}</h3>
               <p>{user.email}</p>
               <p>Rol: {user.role}</p>
+              <p>Estado: {user.banned === 1 ? "Baneado" : "Activo"}</p>
               <p>ID: {user.id}</p>
+              <form action={banUser}>
+                <input type="hidden" name="userId" value={user.id} />
+                <button
+                  type="submit"
+                  className={`btn ${
+                    user.banned === 1 ? "bg-green-500" : "bg-red-500"
+                  } text-white px-4 py-2 rounded mt-2`}
+                >
+                  {user.banned === 1 ? "Desbanear" : "Banear"}
+                </button>
+              </form>
             </div>
           ))
         )}
