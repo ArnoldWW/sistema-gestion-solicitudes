@@ -61,11 +61,14 @@ export default function StatsCharts({
       <h2 className="mt-10">Gráficos</h2>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-5">
         <div>
-          <h3>Usuarios por Rol</h3>
-          <Bar data={userData} />
+          <h3 className="mb-3">Usuarios por Rol</h3>
+          <Bar
+            data={userData}
+            options={{ plugins: { legend: { display: false } } }}
+          />
         </div>
         <div>
-          <h3>Solicitudes por Estado</h3>
+          <h3 className="mb-3">Solicitudes por Estado</h3>
           <Pie data={requestData} />
         </div>
       </div>
