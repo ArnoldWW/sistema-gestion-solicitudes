@@ -4,9 +4,10 @@ import FormattedDate from "@/components/FormattedDate";
 
 async function getAllRequests(status?: string) {
   let sql = `
-    SELECT r.id, r.title, r.status, r.created_at, r.updated_at, u.name as user_name
+    SELECT r.id, r.title, r.status, r.created_at, r.updated_at, u.name as user_name, s.name as support_name
     FROM requests r
     LEFT JOIN users u ON r.user_id = u.id
+    LEFT JOIN users s ON r.support_id = s.id
   `;
   const args: string[] = [];
 
@@ -25,6 +26,7 @@ async function getAllRequests(status?: string) {
     created_at: string;
     updated_at: string;
     user_name: string;
+    support_name: string;
   }[];
 }
 
@@ -59,6 +61,7 @@ export default async function RequestsPage({
               <th className="py-2 px-4">ID</th>
               <th className="py-2 px-4">Título</th>
               <th className="py-2 px-4">Usuario</th>
+              <th className="py-2 px-4">Soporte</th>
               <th className="py-2 px-4">Estado</th>
               <th className="py-2 px-4">Creado</th>
               <th className="py-2 px-4">Actualizado</th>
@@ -71,6 +74,9 @@ export default async function RequestsPage({
                 <td className="py-2 px-4">{request.id}</td>
                 <td className="py-2 px-4">{request.title}</td>
                 <td className="py-2 px-4">{request.user_name || "N/A"}</td>
+                <td className="py-2 px-4">
+                  {request.support_name || "No asignado"}
+                </td>
                 <td className="py-2 px-4">
                   <span
                     className={`inline-flex items-center px-2 py-0.5 rounded ${
