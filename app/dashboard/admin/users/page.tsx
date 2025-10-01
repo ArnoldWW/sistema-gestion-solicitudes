@@ -57,7 +57,7 @@ export default async function UsersAdminPage({
           users.map((user) => (
             <div
               key={user.id}
-              className="bg-white p-4 rounded border border-gray-200"
+              className="bg-white p-4 rounded border border-gray-200 flex flex-col gap-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -80,17 +80,23 @@ export default async function UsersAdminPage({
               <p>Rol: {user.role}</p>
               <p>Estado: {user.banned === 1 ? "Baneado" : "Activo"}</p>
               <p>ID: {user.id}</p>
-              <form action={banUser}>
-                <input type="hidden" name="userId" value={user.id} />
-                <button
-                  type="submit"
-                  className={`btn ${
-                    user.banned === 1 ? "bg-green-500" : "bg-red-500"
-                  } text-white px-4 py-2 rounded mt-2`}
-                >
-                  {user.banned === 1 ? "Desbanear" : "Banear"}
-                </button>
-              </form>
+              {user.role === "ADMIN" ? (
+                <p className="text-red-500">
+                  No puedes banear a un administrador.
+                </p>
+              ) : (
+                <form action={banUser}>
+                  <input type="hidden" name="userId" value={user.id} />
+                  <button
+                    type="submit"
+                    className={`btn ${
+                      user.banned === 1 ? "bg-green-500" : "bg-red-500"
+                    } text-white px-4 py-2 rounded mt-2`}
+                  >
+                    {user.banned === 1 ? "Desbanear" : "Banear"}
+                  </button>
+                </form>
+              )}
             </div>
           ))
         )}
