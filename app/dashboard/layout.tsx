@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { Role, SidebarLink } from "@/types";
 import { logoutUser } from "../actions/logoutUser";
 import Sidebar from "@/components/Sidebar";
-import Link from "next/link";
+import DashboardNav from "@/components/DashboardNav";
 
 const linksByRole: Record<Role, SidebarLink[]> = {
   CLIENTE: [
@@ -41,11 +41,7 @@ export default async function DashboardLayout({
             Gestion de solicitudes
           </h1>
           <nav className="flex flex-col mt-4 gap-4">
-            {linksByRole[user.role].map((link) => (
-              <Link key={link.href} href={link.href}>
-                {link.label}
-              </Link>
-            ))}
+            <DashboardNav links={linksByRole[user.role]} />
           </nav>
         </div>
 
