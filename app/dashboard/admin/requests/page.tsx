@@ -71,7 +71,21 @@ export default async function RequestsPage({
                 <td className="py-2 px-4">{request.id}</td>
                 <td className="py-2 px-4">{request.title}</td>
                 <td className="py-2 px-4">{request.user_name || "N/A"}</td>
-                <td className="py-2 px-4">{request.status}</td>
+                <td className="py-2 px-4">
+                  <span
+                    className={`inline-flex items-center px-2 py-0.5 rounded ${
+                      request.status === "Abierto"
+                        ? "bg-green-100"
+                        : request.status === "En progreso"
+                        ? "bg-yellow-100"
+                        : request.status === "Resuelto"
+                        ? "bg-blue-100"
+                        : "bg-gray-100"
+                    }`}
+                  >
+                    {request.status}
+                  </span>
+                </td>
                 <td className="py-2 px-4">
                   {request.created_at ? (
                     <FormattedDate iso={request.created_at} />

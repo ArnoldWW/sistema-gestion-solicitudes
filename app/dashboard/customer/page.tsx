@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { db } from "@/lib/db";
 import type { RequestRow } from "@/types";
+import RequestTableRow from "@/components/RequestTableRow";
 
 export default async function CustomerRequestsPage() {
   const user = await getCurrentUser();
@@ -57,19 +58,23 @@ export default async function CustomerRequestsPage() {
       <div className="block overflow-x-auto bg-white rounded border border-gray-200">
         <table className="min-w-full divide-y divide-gray-200">
           {/* --- */}
-          <thead className="bg-gray-50">
+          <thead className="bg-gray-50 text-sm">
             <tr>
-              <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">
+              <th className="px-6 py-3 text-left uppercase tracking-wider">
                 Título
               </th>
-              <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">
+              <th className="px-6 py-3 text-left uppercase tracking-wider">
                 Descripción
               </th>
-              <th className="px-6 py-3 text-left text-xs uppercase tracking-wider">
+              <th className="px-6 py-3 text-left uppercase tracking-wider">
                 Estado
               </th>
 
-              <th className="px-6 py-3 text-right text-xs uppercase tracking-wider">
+              <th className="px-6 py-3 text-left uppercase tracking-wider">
+                Fecha de actualización
+              </th>
+
+              <th className="px-6 py-3 text-right uppercase tracking-wider">
                 Acciones
               </th>
             </tr>
@@ -77,28 +82,7 @@ export default async function CustomerRequestsPage() {
           {/* --- */}
           <tbody className="bg-white divide-y divide-gray-200">
             {rows.map((row: RequestRow) => (
-              <tr key={row.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-gray-900">
-                  {row.title}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap overflow-ellipsis text-gray-500 max-w-xs truncate">
-                  {row.description}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded">
-                    {row.status}
-                  </span>
-                </td>
-
-                <td className="px-6 py-4 whitespace-nowrap text-right space-x-2">
-                  <Link
-                    href={`/dashboard/customer/${row.id}`}
-                    className="btn hover:no-underline"
-                  >
-                    Ver
-                  </Link>
-                </td>
-              </tr>
+              <RequestTableRow key={row.id} row={row} />
             ))}
           </tbody>
         </table>
