@@ -75,10 +75,6 @@ export async function respondRequest(formData: FormData) {
 }
 
 // wrapper for form action
-export async function respondRequestAction(formData: FormData): Promise<void> {
-  const result = await respondRequest(formData);
-  if (result?.success) {
-    // Redirect back to support dashboard after success
-    redirect("/dashboard/support");
-  }
+export async function respondRequestAction(formData: FormData) {
+  return await respondRequest(formData);
 }

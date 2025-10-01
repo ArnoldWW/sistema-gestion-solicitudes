@@ -5,6 +5,7 @@ import type { RequestRow } from "@/types";
 import { respondRequestAction } from "@/app/actions/respondRequest";
 import FormattedDate from "@/components/FormattedDate";
 import { redirect } from "next/navigation";
+import RespondForm from "@/components/RespondForm";
 
 type SupportRequestDetailProps = {
   params: Promise<{ id: string }>;
@@ -105,38 +106,11 @@ export default async function SupportRequestDetail({
         {/* Form for support to respond/update status */}
         <div className="mt-6">
           <h4 className="font-bold mb-2">Responder / Actualizar estado</h4>
-          <form action={respondRequestAction} className="space-y-4">
-            <input type="hidden" name="id" value={row.id} />
-
-            <div>
-              <label className="block text-sm font-medium">Respuesta</label>
-              <textarea
-                name="response"
-                defaultValue={row.response ?? ""}
-                className="mt-1 block w-full rounded border-gray-300"
-                rows={6}
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium">Estado</label>
-              <select
-                name="status"
-                defaultValue={row.status}
-                className="mt-1 block rounded border-gray-300"
-              >
-                <option value="Abierto">Abierto</option>
-                <option value="En progreso">En progreso</option>
-                <option value="Resuelto">Resuelto</option>
-              </select>
-            </div>
-
-            <div className="pt-2">
-              <button type="submit" className="btn">
-                Guardar respuesta
-              </button>
-            </div>
-          </form>
+          <RespondForm
+            requestId={row.id}
+            currentResponse={row.response ?? null}
+            currentStatus={row.status}
+          />
         </div>
       </div>
     </div>
