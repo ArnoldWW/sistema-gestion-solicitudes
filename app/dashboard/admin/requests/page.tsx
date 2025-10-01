@@ -108,7 +108,6 @@ export default async function RequestsPage({
                 </td>
                 <td className="py-2 px-4 flex gap-2">
                   <a href={`/dashboard/customer/${request.id}`}>Ver</a>
-                  <a href={`/dashboard/support/${request.id}`}>Responder</a>
                 </td>
               </tr>
             ))}

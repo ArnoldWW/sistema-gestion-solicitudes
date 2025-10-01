@@ -73,8 +73,3 @@ export async function respondRequest(formData: FormData) {
     return { success: false, error: "Error actualizando la solicitud" };
   }
 }
-
-// wrapper for form action
-export async function respondRequestAction(formData: FormData) {
-  return await respondRequest(formData);
-}

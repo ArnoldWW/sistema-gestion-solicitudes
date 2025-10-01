@@ -2,7 +2,6 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { db } from "@/lib/db";
 import type { RequestRow } from "@/types";
-import { respondRequestAction } from "@/app/actions/respondRequest";
 import FormattedDate from "@/components/FormattedDate";
 import { redirect } from "next/navigation";
 import RespondForm from "@/components/RespondForm";
@@ -61,19 +60,13 @@ export default async function SupportRequestDetail({
   };
 
   // Authorization: allow ADMIN or assigned support user
-  if (user.role !== "ADMIN" && row.support_id !== user.id) {
+  if (row.support_id !== user.id) {
     return redirect("/dashboard");
   }
 
   return (
     <div>
-      {user.role === "ADMIN" ? (
-        <Link href="/dashboard/admin/requests">
-          &larr; Volver a Solicitudes Asignadas
-        </Link>
-      ) : (
-        <Link href="/dashboard/support">&larr; Volver a Mis Solicitudes</Link>
-      )}
+      <Link href="/dashboard/support">&larr; Volver a Mis Solicitudes</Link>
 
       <h1 className="text-2xl font-bold mt-4">{row.title}</h1>
       <p className="text-sm">Solicitante: {row.user_name ?? row.user_id}</p>
