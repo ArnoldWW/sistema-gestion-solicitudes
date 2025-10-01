@@ -60,11 +60,21 @@ gestionar y responder solicitudes.
 - **Desplegada**: La aplicación estará disponible en la URL proporcionada por
   Vercel (por ejemplo, `https://sistema-gestion-solicitudes.vercel.app`).
 
+Para probar:
+
+- Regístrate como usuario (cliente por defecto).
+- Inicia sesión y crea solicitudes desde el dashboard de cliente.
+- Como administrador, revisa usuarios y solicitudes en `/dashboard/admin`, y
+  banear/desbanear usuarios desde la lista de usuarios.
+- Como soporte, responde a solicitudes asignadas en `/dashboard/support`.
+- Los usuarios baneados no podrán iniciar sesión.
+
 ## Funcionalidades Implementadas
 
 - **Autenticación**: Registro, login y logout con JWT.
 - **Roles de usuario**: Cliente (crea solicitudes), Soporte (responde
-  solicitudes), Administrador (gestiona usuarios y ve estadísticas).
+  solicitudes), Administrador (gestiona usuarios, ve estadísticas y puede
+  banear/desbanear usuarios).
 - **Dashboards**: Páginas personalizadas según el rol, con navegación por
   sidebar.
 - **Gestión de solicitudes**: Crear, listar, filtrar y responder solicitudes.
@@ -96,5 +106,8 @@ gestionar y responder solicitudes.
 
 ## Decisiones técnicas
 
-Se escogio next.js con turso(sqlite) por la facilidad de integrar estas dos
-tecnologias y la facilidad de despliegue en vercel.
+Se eligió Next.js junto con Turso (SQLite) por su integración sencilla,
+desarrollo ágil y compatibilidad nativa con el despliegue en Vercel. Esta
+combinación permite crear aplicaciones fullstack modernas, con backend y
+frontend en un solo proyecto, y facilita la gestión de la base de datos sin
+complicaciones adicionales.
