@@ -86,13 +86,9 @@ export default async function RequestsPage({
                     "—"
                   )}
                 </td>
-                <td className="py-2 px-4">
-                  <a
-                    href={`/dashboard/customer/${request.id}`}
-                    className="text-blue-600 hover:underline"
-                  >
-                    Ver
-                  </a>
+                <td className="py-2 px-4 flex gap-2">
+                  <a href={`/dashboard/customer/${request.id}`}>Ver</a>
+                  <a href={`/dashboard/support/${request.id}`}>Responder</a>
                 </td>
               </tr>
             ))}

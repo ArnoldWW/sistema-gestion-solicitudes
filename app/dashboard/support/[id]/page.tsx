@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import type { RequestRow } from "@/types";
 import { respondRequestAction } from "@/app/actions/respondRequest";
 import FormattedDate from "@/components/FormattedDate";
+import { redirect } from "next/navigation";
 
 type SupportRequestDetailProps = {
   params: Promise<{ id: string }>;
@@ -60,22 +61,18 @@ export default async function SupportRequestDetail({
 
   // Authorization: allow ADMIN or assigned support user
   if (user.role !== "ADMIN" && row.support_id !== user.id) {
-    return (
-      <div className="p-6">
-        <h2>No autorizado</h2>
-        <p>No tienes permiso para ver esta solicitud.</p>
-        <Link href="/dashboard/support" className="text-blue-500 underline">
-          Volver
-        </Link>
-      </div>
-    );
+    return redirect("/dashboard");
   }
 
   return (
     <div>
-      <Link href="/dashboard/support" className="text-sm">
-        &larr; Volver a solicitudes asignadas
-      </Link>
+      {user.role === "ADMIN" ? (
+        <Link href="/dashboard/admin/requests">
+          &larr; Volver a Solicitudes Asignadas
+        </Link>
+      ) : (
+        <Link href="/dashboard/support">&larr; Volver a Mis Solicitudes</Link>
+      )}
 
       <h1 className="text-2xl font-bold mt-4">{row.title}</h1>
       <p className="text-sm">Solicitante: {row.user_name ?? row.user_id}</p>

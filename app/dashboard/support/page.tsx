@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { db } from "@/lib/db";
 import type { RequestRow } from "@/types";
+import { redirect } from "next/navigation";
 
 export default async function SupportPage() {
   const user = await getCurrentUser();
@@ -16,12 +17,7 @@ export default async function SupportPage() {
   }
 
   if (user.role !== "SOPORTE") {
-    return (
-      <div className="p-6">
-        <h2>Acceso denegado</h2>
-        <p>No tienes permiso para ver el panel de soporte.</p>
-      </div>
-    );
+    return redirect("/dashboard");
   }
 
   // Query requests assigned to this support user, include requester name
