@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { nanoid } from "nanoid";
 import bcrypt from "bcryptjs";
 
+// Server action to register a new user
 export async function registerUser(formData: {
   name: string;
   email: string;

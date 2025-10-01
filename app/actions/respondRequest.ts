@@ -2,8 +2,8 @@
 
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/getCurrentUser";
-import { redirect } from "next/navigation";
 
+// Server action to respond to a support request
 export async function respondRequest(formData: FormData) {
   const user = await getCurrentUser();
   if (!user) {

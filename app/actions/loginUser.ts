@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 
 const SECRET_KEY = process.env.JWT_SECRET || "super-secret-key";
 
+// Server action to log in a user
 export async function loginUser(email: string, password: string) {
   try {
     if (!email || !password) {

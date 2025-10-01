@@ -5,6 +5,7 @@ import { nanoid } from "nanoid";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { redirect } from "next/navigation";
 
+// Server action to create a support request
 export async function createRequest(formData: FormData) {
   try {
     const user = await getCurrentUser();
