@@ -15,7 +15,6 @@ gestionar y responder solicitudes.
 - **bcrypt**: Para encriptación de contraseñas.
 - **Chart.js / react-chartjs-2**: Para gráficos estadísticos.
 - **React Hot Toast**: Para notificaciones en la interfaz.
-- **Turso (sqlite)**: Base de datos `https://turso.tech/`
 
 ## Instalación en Local
 
