@@ -24,7 +24,7 @@ async function getAllUsers(role?: string) {
 export default async function UsersAdminPage({
   searchParams
 }: {
-  searchParams: { role?: string };
+  searchParams: Promise<{ role?: string }>;
 }) {
   const { role } = await searchParams;
   const users = await getAllUsers(role);

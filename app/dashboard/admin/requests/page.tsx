@@ -33,7 +33,7 @@ async function getAllRequests(status?: string) {
 export default async function RequestsPage({
   searchParams
 }: {
-  searchParams: { status?: string };
+  searchParams: Promise<{ status?: string }>;
 }) {
   const { status } = await searchParams;
   const requests = await getAllRequests(status);
