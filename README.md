@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sistema de Gestión de Solicitudes
 
-## Getting Started
+Este proyecto es una aplicación web para la gestión de solicitudes de soporte
+técnico. Incluye autenticación de usuarios, roles diferenciados (cliente,
+soporte, administrador), dashboards personalizados y funcionalidades para crear,
+gestionar y responder solicitudes.
 
-First, run the development server:
+## Tecnologías Usadas
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js 15**: Framework de React con App Router para el frontend y backend.
+- **TypeScript**: Para tipado estático y mejor desarrollo.
+- **Tailwind CSS**: Para estilos y diseño responsivo.
+- **Turso/SQLite**: Base de datos para almacenar usuarios y solicitudes.
+- **JWT**: Para autenticación y manejo de sesiones.
+- **bcrypt**: Para encriptación de contraseñas.
+- **Chart.js / react-chartjs-2**: Para gráficos estadísticos.
+- **React Hot Toast**: Para notificaciones en la interfaz.
+
+## Instalación en Local
+
+1. Clona el repositorio:
+
+   ```bash
+   git clone https://github.com/ArnoldWW/sistema-gestion-solicitudes.git
+   cd sistema-gestion-solicitudes
+   ```
+
+2. Instala las dependencias:
+
+   ```bash
+   npm install
+   ```
+
+3. Configura las variables de entorno:
+
+   - Copia `env.example` a `.env.local` y completa las variables necesarias
+     (como la URL de la base de datos Turso, JWT secret, etc.).
+
+4. Ejecuta las migraciones de la base de datos (si es necesario):
+
+   - Usa el archivo `tables.sql` para crear las tablas en Turso/SQLite.
+
+5. Inicia el servidor de desarrollo:
+
+   ```bash
+   npm run dev
+   ```
+
+6. Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+
+## La aplicacion va a estar deplegada en vercel
+
+`https://sistema-gestion-solicitudes.vercel.app`
+
+## Cómo Probar la Aplicación
+
+- **En local**: Sigue los pasos de instalación y accede a la aplicación en
+  `http://localhost:3000`.
+- **Desplegada**: La aplicación estará disponible en la URL proporcionada por
+  Vercel (por ejemplo, `https://sistema-gestion-solicitudes.vercel.app`).
+
+## Funcionalidades Implementadas
+
+- **Autenticación**: Registro, login y logout con JWT.
+- **Roles de usuario**: Cliente (crea solicitudes), Soporte (responde
+  solicitudes), Administrador (gestiona usuarios y ve estadísticas).
+- **Dashboards**: Páginas personalizadas según el rol, con navegación por
+  sidebar.
+- **Gestión de solicitudes**: Crear, listar, filtrar y responder solicitudes.
+- **Estadísticas**: Gráficos de barras y pie para usuarios por rol y solicitudes
+  por estado.
+- **Formularios**: Validación en cliente y servidor, con notificaciones de
+  toast.
+- **Responsive**: Diseño adaptativo con Tailwind CSS.
+
+## Estructura de Carpetas
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+/
+├── app/                            # Páginas y layouts de Next.js (App Router)
+│   ├── actions/                    # Server actions para formularios
+│   ├── api/                        # Rutas API
+│   ├── dashboard/                  # Dashboards por rol
+│   │   ├── admin/                  # Páginas de admin
+│   │   ├── customer/               # Páginas de cliente
+│   │   └── support/                # Páginas de soporte
+│   └──page.tsx (login), register/  # Páginas de auth
+├── components/                     # Componentes reutilizables
+├── lib/                            # Utilidades (DB, auth)
+├── public/                         # Archivos estáticos
+├── scripts/                        # Scripts auxiliares
+├── types/                          # Definiciones de tipos TypeScript
+└── tables.sql                      # Esquema de la base de datos
+```
