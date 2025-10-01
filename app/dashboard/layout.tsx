@@ -14,7 +14,8 @@ const linksByRole: Record<Role, SidebarLink[]> = {
   SOPORTE: [{ href: "/dashboard/support", label: "Solicitudes Asignadas" }],
   ADMIN: [
     { href: "/dashboard/admin", label: "Estadísticas" },
-    { href: "/dashboard/admin/users", label: "Usuarios" }
+    { href: "/dashboard/admin/users", label: "Usuarios" },
+    { href: "/dashboard/admin/requests", label: "Todas las Solicitudes" }
   ]
 };
 

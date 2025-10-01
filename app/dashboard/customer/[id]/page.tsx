@@ -52,7 +52,7 @@ export default async function RequestDetailPage({
       <div className="p-6">
         <h2>No autorizado</h2>
         <p>No tienes permiso para ver esta solicitud.</p>
-        <Link href="/dashboard/customer" className="text-blue-500 underline">
+        <Link href="/dashboard" className="text-blue-500 underline">
           Volver
         </Link>
       </div>
@@ -61,9 +61,18 @@ export default async function RequestDetailPage({
 
   return (
     <div>
-      <Link href="/dashboard/customer" className="text-sm">
-        &larr; Volver a mis solicitudes
-      </Link>
+      {user?.role === "ADMIN" ? (
+        <Link
+          href="/dashboard/admin/requests"
+          className="text-blue-500 underline"
+        >
+          &larr; Volver a todas las solicitudes
+        </Link>
+      ) : (
+        <Link href="/dashboard/customer" className="text-blue-500 underline">
+          &larr; Volver a mis solicitudes
+        </Link>
+      )}
 
       <h1 className="text-2xl font-bold mt-4">{row.title}</h1>
       <p className="text-sm">
