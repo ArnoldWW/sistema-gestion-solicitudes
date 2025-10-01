@@ -15,6 +15,7 @@ gestionar y responder solicitudes.
 - **bcrypt**: Para encriptación de contraseñas.
 - **Chart.js / react-chartjs-2**: Para gráficos estadísticos.
 - **React Hot Toast**: Para notificaciones en la interfaz.
+- **Turso (sqlite)**: Base de datos `https://turso.tech/`
 
 ## Instalación en Local
 
@@ -92,3 +93,8 @@ gestionar y responder solicitudes.
 ├── types/                          # Definiciones de tipos TypeScript
 └── tables.sql                      # Esquema de la base de datos
 ```
+
+## Decisiones técnicas
+
+Se escogio next.js con turso(sqlite) por la facilidad de integrar estas dos
+tecnologias y la facilidad de despliegue en vercel.
