@@ -62,14 +62,19 @@ export default function StatsCharts({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-5">
         <div>
           <h3 className="mb-3">Usuarios por Rol</h3>
-          <Bar
-            data={userData}
-            options={{ plugins: { legend: { display: false } } }}
-          />
+          {userStats.length === 0 ? (
+            <p>No se encontraron usuarios para mostrar el gráfico.</p>
+          ) : (
+            <Bar data={userData} />
+          )}
         </div>
         <div>
           <h3 className="mb-3">Solicitudes por Estado</h3>
-          <Pie data={requestData} />
+          {requestStats.length === 0 ? (
+            <p>No se encontraron solicitudes para mostrar el gráfico.</p>
+          ) : (
+            <Pie data={requestData} />
+          )}
         </div>
       </div>
     </>

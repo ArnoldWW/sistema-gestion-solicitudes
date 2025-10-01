@@ -53,12 +53,16 @@ export default async function AdminPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <h3 className="col-span-full mb-2">Solicitudes por Estado</h3>
-        {requestStats.map((stat) => (
-          <div key={stat.status} className="bg-green-100 p-4 rounded-lg">
-            <h4 className="text-lg font-medium">{stat.status}</h4>
-            <p className="text-2xl font-bold">{stat.count}</p>
-          </div>
-        ))}
+        {requestStats.length === 0 ? (
+          <p>No se encontraron solicitudes.</p>
+        ) : (
+          requestStats.map((stat) => (
+            <div key={stat.status} className="bg-green-100 p-4 rounded-lg">
+              <h4 className="text-lg font-medium">{stat.status}</h4>
+              <p className="text-2xl font-bold">{stat.count}</p>
+            </div>
+          ))
+        )}
       </div>
       <StatsCharts
         userStatsJson={userStatsJson}

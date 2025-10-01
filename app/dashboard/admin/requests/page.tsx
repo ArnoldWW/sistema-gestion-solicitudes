@@ -42,78 +42,84 @@ export default async function RequestsPage({
     <>
       <h2 className="text-2xl font-bold mb-4">Todas las Solicitudes</h2>
 
-      <form method="get" className="mb-4 flex items-center gap-2">
-        <select name="status" id="status" defaultValue={status || "TODOS"}>
-          <option value="TODOS">Todos</option>
-          <option value="Abierto">Abierto</option>
-          <option value="En progreso">En progreso</option>
-          <option value="Resuelto">Resuelto</option>
-        </select>
-        <button type="submit" className="btn">
-          Filtrar
-        </button>
-      </form>
+      {requests.length === 0 ? (
+        <p>No se encontraron solicitudes.</p>
+      ) : (
+        <>
+          <form method="get" className="mb-4 flex items-center gap-2">
+            <select name="status" id="status" defaultValue={status || "TODOS"}>
+              <option value="TODOS">Todos</option>
+              <option value="Abierto">Abierto</option>
+              <option value="En progreso">En progreso</option>
+              <option value="Resuelto">Resuelto</option>
+            </select>
+            <button type="submit" className="btn">
+              Filtrar
+            </button>
+          </form>
 
-      <div className="overflow-x-auto rounded ">
-        <table className="min-w-full bg-white border border-gray-200 text-sm">
-          <thead>
-            <tr className="bg-gray-100 text-left w-full">
-              <th className="py-2 px-4">ID</th>
-              <th className="py-2 px-4">Título</th>
-              <th className="py-2 px-4">Usuario</th>
-              <th className="py-2 px-4">Soporte</th>
-              <th className="py-2 px-4">Estado</th>
-              <th className="py-2 px-4">Creado</th>
-              <th className="py-2 px-4">Actualizado</th>
-              <th className="py-2 px-4">Acciones</th>
-            </tr>
-          </thead>
-          <tbody className="text-sm">
-            {requests.map((request) => (
-              <tr key={request.id} className="hover:bg-gray-50">
-                <td className="py-2 px-4">{request.id}</td>
-                <td className="py-2 px-4">{request.title}</td>
-                <td className="py-2 px-4">{request.user_name || "N/A"}</td>
-                <td className="py-2 px-4">
-                  {request.support_name || "No asignado"}
-                </td>
-                <td className="py-2 px-4">
-                  <span
-                    className={`inline-flex items-center px-2 py-0.5 rounded ${
-                      request.status === "Abierto"
-                        ? "bg-green-100"
-                        : request.status === "En progreso"
-                        ? "bg-yellow-100"
-                        : request.status === "Resuelto"
-                        ? "bg-blue-100"
-                        : "bg-gray-100"
-                    }`}
-                  >
-                    {request.status}
-                  </span>
-                </td>
-                <td className="py-2 px-4">
-                  {request.created_at ? (
-                    <FormattedDate iso={request.created_at} />
-                  ) : (
-                    "—"
-                  )}
-                </td>
-                <td className="py-2 px-4">
-                  {request.updated_at ? (
-                    <FormattedDate iso={request.updated_at} />
-                  ) : (
-                    "—"
-                  )}
-                </td>
-                <td className="py-2 px-4 flex gap-2">
-                  <a href={`/dashboard/customer/${request.id}`}>Ver</a>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          <div className="overflow-x-auto rounded ">
+            <table className="min-w-full bg-white border border-gray-200 text-sm">
+              <thead>
+                <tr className="bg-gray-100 text-left w-full">
+                  <th className="py-2 px-4">ID</th>
+                  <th className="py-2 px-4">Título</th>
+                  <th className="py-2 px-4">Usuario</th>
+                  <th className="py-2 px-4">Soporte</th>
+                  <th className="py-2 px-4">Estado</th>
+                  <th className="py-2 px-4">Creado</th>
+                  <th className="py-2 px-4">Actualizado</th>
+                  <th className="py-2 px-4">Acciones</th>
+                </tr>
+              </thead>
+              <tbody className="text-sm">
+                {requests.map((request) => (
+                  <tr key={request.id} className="hover:bg-gray-50">
+                    <td className="py-2 px-4">{request.id}</td>
+                    <td className="py-2 px-4">{request.title}</td>
+                    <td className="py-2 px-4">{request.user_name || "N/A"}</td>
+                    <td className="py-2 px-4">
+                      {request.support_name || "No asignado"}
+                    </td>
+                    <td className="py-2 px-4">
+                      <span
+                        className={`inline-flex items-center px-2 py-0.5 rounded ${
+                          request.status === "Abierto"
+                            ? "bg-green-100"
+                            : request.status === "En progreso"
+                            ? "bg-yellow-100"
+                            : request.status === "Resuelto"
+                            ? "bg-blue-100"
+                            : "bg-gray-100"
+                        }`}
+                      >
+                        {request.status}
+                      </span>
+                    </td>
+                    <td className="py-2 px-4">
+                      {request.created_at ? (
+                        <FormattedDate iso={request.created_at} />
+                      ) : (
+                        "—"
+                      )}
+                    </td>
+                    <td className="py-2 px-4">
+                      {request.updated_at ? (
+                        <FormattedDate iso={request.updated_at} />
+                      ) : (
+                        "—"
+                      )}
+                    </td>
+                    <td className="py-2 px-4 flex gap-2">
+                      <a href={`/dashboard/customer/${request.id}`}>Ver</a>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </>
   );
 }
