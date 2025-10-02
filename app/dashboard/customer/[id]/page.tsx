@@ -4,36 +4,19 @@ import { db } from "@/lib/db";
 import type { RequestRow } from "@/types";
 import FormattedDate from "@/components/FormattedDate";
 
-type RequestDetailPageProps = {
-  params: Promise<{ id: string }>;
-};
-
-export default async function RequestDetailPage({
-  params
-}: RequestDetailPageProps) {
-  const { id } = await params;
-  const user = await getCurrentUser();
-
-  // Query the request by ID
+async function getRequestById(id: string): Promise<RequestRow | null> {
   const res = await db.execute({
     sql: "SELECT * FROM requests WHERE id = ? LIMIT 1",
     args: [id]
   });
 
   if (!res || res.rows.length === 0) {
-    return (
-      <div className="p-6">
-        <h2>Solicitud no encontrada</h2>
-        <Link href="/dashboard/customer" className="text-blue-500 underline">
-          Volver
-        </Link>
-      </div>
-    );
+    return null;
   }
 
   const raw = res.rows[0] as any;
 
-  const row: RequestRow = {
+  return {
     id: String(raw.id),
     user_id: raw.user_id ? String(raw.user_id) : "",
     user_name: raw.user_name ?? null,
@@ -45,6 +28,29 @@ export default async function RequestDetailPage({
     updated_at: raw.updated_at ? String(raw.updated_at) : null,
     support_id: raw.support_id ? String(raw.support_id) : null
   };
+}
+
+type RequestDetailPageProps = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function RequestDetailPage({
+  params
+}: RequestDetailPageProps) {
+  const { id } = await params;
+  const user = await getCurrentUser();
+  const row = await getRequestById(id);
+
+  if (!row) {
+    return (
+      <div className="p-6">
+        <h2>Solicitud no encontrada</h2>
+        <Link href="/dashboard/customer" className="text-blue-500 underline">
+          Volver
+        </Link>
+      </div>
+    );
+  }
 
   // Authorization: owners and admins can view
   if (user?.role !== "ADMIN" && row.user_id !== user?.id) {
