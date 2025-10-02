@@ -1,6 +1,6 @@
 import React from "react";
 import { db } from "@/lib/db";
-import { banUser } from "@/app/actions/banUser";
+import BanUserButton from "@/components/BanUserButton";
 
 async function getAllUsers(role?: string) {
   let sql = "SELECT id, name, email, role, banned FROM users";
@@ -85,17 +85,7 @@ export default async function UsersAdminPage({
                   No puedes banear a un administrador.
                 </p>
               ) : (
-                <form action={banUser}>
-                  <input type="hidden" name="userId" value={user.id} />
-                  <button
-                    type="submit"
-                    className={`btn ${
-                      user.banned === 1 ? "bg-green-500" : "bg-red-500"
-                    } text-white px-4 py-2 rounded mt-2`}
-                  >
-                    {user.banned === 1 ? "Desbanear" : "Banear"}
-                  </button>
-                </form>
+                <BanUserButton userId={user.id} isBanned={user.banned === 1} />
               )}
             </div>
           ))
