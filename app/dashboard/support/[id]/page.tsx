@@ -6,6 +6,34 @@ import FormattedDate from "@/components/FormattedDate";
 import { redirect } from "next/navigation";
 import RespondForm from "@/components/RespondForm";
 
+async function getRequestById(id: string): Promise<RequestRow | null> {
+  const res = await db.execute({
+    sql: `SELECT r.id, r.user_id, u.name AS user_name, r.title, r.description, r.status, r.response, r.created_at, r.updated_at, r.support_id
+          FROM requests r
+          LEFT JOIN users u ON r.user_id = u.id
+          WHERE r.id = ? LIMIT 1`,
+    args: [id]
+  });
+
+  if (!res || res.rows.length === 0) {
+    return null;
+  }
+
+  const raw = res.rows[0] as any;
+  return {
+    id: String(raw.id),
+    user_id: raw.user_id ? String(raw.user_id) : "",
+    user_name: raw.user_name ?? null,
+    title: raw.title ?? "",
+    description: raw.description ?? null,
+    status: raw.status ?? "",
+    response: raw.response ?? null,
+    created_at: raw.created_at ? String(raw.created_at) : null,
+    updated_at: raw.updated_at ? String(raw.updated_at) : null,
+    support_id: raw.support_id ? String(raw.support_id) : null
+  };
+}
+
 type SupportRequestDetailProps = {
   params: Promise<{ id: string }>;
 };
@@ -24,17 +52,10 @@ export default async function SupportRequestDetail({
   }
 
   const { id } = await params;
+  const row = await getRequestById(id);
 
-  // fetch request by ID
-  const res = await db.execute({
-    sql: `SELECT r.id, r.user_id, u.name AS user_name, r.title, r.description, r.status, r.response, r.created_at, r.updated_at, r.support_id
-          FROM requests r
-          LEFT JOIN users u ON r.user_id = u.id
-          WHERE r.id = ? LIMIT 1`,
-    args: [id]
-  });
-
-  if (!res || res.rows.length === 0) {
+  // Request not found
+  if (!row) {
     return (
       <div className="p-6">
         <h2>Solicitud no encontrada</h2>
@@ -45,21 +66,7 @@ export default async function SupportRequestDetail({
     );
   }
 
-  const raw = res.rows[0] as any;
-  const row: RequestRow = {
-    id: String(raw.id),
-    user_id: raw.user_id ? String(raw.user_id) : "",
-    user_name: raw.user_name ?? null,
-    title: raw.title ?? "",
-    description: raw.description ?? null,
-    status: raw.status ?? "",
-    response: raw.response ?? null,
-    created_at: raw.created_at ? String(raw.created_at) : null,
-    updated_at: raw.updated_at ? String(raw.updated_at) : null,
-    support_id: raw.support_id ? String(raw.support_id) : null
-  };
-
-  // Authorization: allow ADMIN or assigned support user
+  // Only the assigned support user can view
   if (row.support_id !== user.id) {
     return redirect("/dashboard");
   }
