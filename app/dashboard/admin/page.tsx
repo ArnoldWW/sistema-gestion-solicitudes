@@ -19,8 +19,11 @@ async function getRequestStats() {
 }
 
 export default async function AdminPage() {
-  const rawUserStats = await getUserStats();
-  const rawRequestStats = await getRequestStats();
+  // Get stats in parallel
+  const [rawUserStats, rawRequestStats] = await Promise.all([
+    getUserStats(),
+    getRequestStats()
+  ]);
 
   // Plain objects nuevos para pasar a client component
   const userStats = rawUserStats.map((stat) => ({
