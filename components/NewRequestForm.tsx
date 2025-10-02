@@ -86,7 +86,7 @@ export default function NewRequestForm({
     <form
       ref={formRef}
       action={action}
-      className="flex flex-col gap-2 mt-4 max-w-1/2"
+      className="flex flex-col gap-2 mt-4 w-full xl:w-1/2"
     >
       <input type="hidden" name="created_at_local" ref={createdAtRef} />
 
