@@ -13,7 +13,7 @@ export async function banUser(formData: FormData) {
   }
 
   try {
-    // Obtener el estado actual
+    // Get current status
     const userResult = await db.execute({
       sql: "SELECT banned FROM users WHERE id = ?",
       args: [userId]
@@ -24,16 +24,18 @@ export async function banUser(formData: FormData) {
     }
 
     const isBanned = (userResult.rows[0] as any).banned === 1;
-    const newBanned = isBanned ? 0 : 1; // Alternar
+    // Switch status
+    const newBanned = isBanned ? 0 : 1;
 
-    // Actualizar
+    // Update
     await db.execute({
       sql: "UPDATE users SET banned = ? WHERE id = ?",
       args: [newBanned, userId]
     });
 
-    revalidatePath("/dashboard/admin/users"); // Refrescar la página
-  } catch (err) {
+    // Refresh
+    revalidatePath("/dashboard/admin/users");
+  } catch {
     throw new Error("Error al actualizar usuario");
   }
 }

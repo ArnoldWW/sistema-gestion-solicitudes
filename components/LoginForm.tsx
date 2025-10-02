@@ -79,10 +79,7 @@ export default function LoginForm() {
         </button>
 
         <small>
-          ¿No tienes cuenta?{" "}
-          <Link href="/register" className="text-blue-500 underline">
-            Crear usuario
-          </Link>
+          ¿No tienes cuenta? <Link href="/register">Crear usuario</Link>
         </small>
       </form>
     </main>
