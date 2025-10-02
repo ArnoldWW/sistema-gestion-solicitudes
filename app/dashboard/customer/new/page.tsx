@@ -4,6 +4,19 @@ import NewRequestForm from "@/components/NewRequestForm";
 import { db } from "@/lib/db";
 import type { SupportUser } from "@/types";
 
+async function getSupportUsers(): Promise<SupportUser[]> {
+  const res = await db.execute({
+    sql: "SELECT id, name, email FROM users WHERE role = ? ORDER BY name",
+    args: ["SOPORTE"]
+  });
+
+  return (res.rows || []).map((r: any) => ({
+    id: String(r.id),
+    name: r.name ?? "",
+    email: r.email ?? ""
+  })) as SupportUser[];
+}
+
 export default async function NewCustomerRequestPage() {
   const user = await getCurrentUser();
 
@@ -16,16 +29,7 @@ export default async function NewCustomerRequestPage() {
     );
   }
 
-  // fetch support users for the dropdown
-  const res = await db.execute({
-    sql: "SELECT id, name, email FROM users WHERE role = ? ORDER BY name",
-    args: ["SOPORTE"]
-  });
-  const supportUsers = (res.rows || []).map((r: any) => ({
-    id: String(r.id),
-    name: r.name ?? "",
-    email: r.email ?? ""
-  })) as SupportUser[];
+  const supportUsers = await getSupportUsers();
 
   return (
     <div>

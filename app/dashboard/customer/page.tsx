@@ -4,6 +4,28 @@ import { db } from "@/lib/db";
 import type { RequestRow } from "@/types";
 import RequestTableRow from "@/components/RequestTableRow";
 
+async function getCustomerRequests(userId: string): Promise<RequestRow[]> {
+  const result = await db.execute({
+    sql: "SELECT id, title, description, status, response, created_at, updated_at FROM requests WHERE user_id = ? ORDER BY created_at DESC",
+    args: [userId]
+  });
+
+  const rawRows = result.rows || [];
+
+  return (rawRows as any[]).map((r) => ({
+    id: String(r.id),
+    user_id: r.user_id ? String(r.user_id) : userId,
+    user_name: r.user_name ?? null,
+    title: r.title ?? "",
+    description: r.description ?? null,
+    status: r.status ?? "",
+    response: r.response ?? null,
+    created_at: r.created_at ? String(r.created_at) : null,
+    updated_at: r.updated_at ? String(r.updated_at) : null,
+    support_id: r.support_id ? String(r.support_id) : null
+  }));
+}
+
 export default async function CustomerRequestsPage() {
   const user = await getCurrentUser();
   if (!user) {
@@ -15,26 +37,7 @@ export default async function CustomerRequestsPage() {
     );
   }
 
-  // Query solicitudes for the current user
-  const result = await db.execute({
-    sql: "SELECT id, title, description, status, response, created_at, updated_at FROM requests WHERE user_id = ? ORDER BY created_at DESC",
-    args: [user.id]
-  });
-
-  const rawRows = result.rows || [];
-
-  const rows: RequestRow[] = (rawRows as any[]).map((r) => ({
-    id: String(r.id),
-    user_id: r.user_id ? String(r.user_id) : user.id,
-    user_name: r.user_name ?? null,
-    title: r.title ?? "",
-    description: r.description ?? null,
-    status: r.status ?? "",
-    response: r.response ?? null,
-    created_at: r.created_at ? String(r.created_at) : null,
-    updated_at: r.updated_at ? String(r.updated_at) : null,
-    support_id: r.support_id ? String(r.support_id) : null
-  }));
+  const rows = await getCustomerRequests(user.id);
 
   if (rows.length === 0) {
     return (
