@@ -1,5 +1,5 @@
 import { getCurrentUser } from "@/lib/getCurrentUser";
-import { createRequestAction } from "@/app/actions/createRequest";
+import { createRequestAction } from "@/actions/createRequest";
 import NewRequestForm from "@/components/NewRequestForm";
 import { db } from "@/lib/db";
 import type { SupportUser } from "@/types";

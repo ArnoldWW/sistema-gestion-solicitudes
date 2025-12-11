@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { respondRequest } from "@/app/actions/respondRequest";
+import { respondRequest } from "@/actions/respondRequest";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 

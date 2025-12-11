@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { registerUser } from "@/app/actions/registerUser";
+import { registerUser } from "@/actions/registerUser";
 import Link from "next/link";
 import toast from "react-hot-toast";
 

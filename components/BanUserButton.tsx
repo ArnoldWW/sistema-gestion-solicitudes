@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { banUser } from "@/app/actions/banUser";
+import { banUser } from "@/actions/banUser";
 import toast from "react-hot-toast";
 
 type BanUserButtonProps = {

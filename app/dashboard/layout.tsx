@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { redirect } from "next/navigation";
 import { Role, SidebarLink } from "@/types";
-import { logoutUser } from "../actions/logoutUser";
+import { logoutUser } from "@/actions/logoutUser";
 import Sidebar from "@/components/Sidebar";
 import DashboardNav from "@/components/DashboardNav";
 
