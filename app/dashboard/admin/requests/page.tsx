@@ -1,6 +1,6 @@
-import React from "react";
 import { db } from "@/lib/db";
 import FormattedDate from "@/components/FormattedDate";
+import { RequestRow } from "@/types";
 
 async function getAllRequests(status?: string) {
   let sql = `
@@ -19,15 +19,7 @@ async function getAllRequests(status?: string) {
   sql += " ORDER BY r.created_at DESC";
 
   const result = await db.execute({ sql, args });
-  return result.rows as unknown as {
-    id: string;
-    title: string;
-    status: string;
-    created_at: string;
-    updated_at: string;
-    user_name: string;
-    support_name: string;
-  }[];
+  return result.rows as unknown as RequestRow[];
 }
 
 export default async function RequestsPage({
@@ -87,10 +79,10 @@ export default async function RequestsPage({
                           request.status === "Abierto"
                             ? "bg-green-100"
                             : request.status === "En progreso"
-                            ? "bg-yellow-100"
-                            : request.status === "Resuelto"
-                            ? "bg-blue-100"
-                            : "bg-gray-100"
+                              ? "bg-yellow-100"
+                              : request.status === "Resuelto"
+                                ? "bg-blue-100"
+                                : "bg-gray-100"
                         }`}
                       >
                         {request.status}

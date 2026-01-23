@@ -31,4 +31,5 @@ export type RequestRow = {
   created_at?: string | null;
   updated_at?: string | null;
   support_id?: string | null;
+  support_name?: string;
 };

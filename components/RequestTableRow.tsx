@@ -10,8 +10,6 @@ interface RequestTableRowProps {
 export default async function RequestTableRow({ row }: RequestTableRowProps) {
   const user = await getCurrentUser();
 
-  console.log(row);
-
   return (
     <tr key={row.id} className="hover:bg-gray-50 text-sm">
       <td className="px-6 py-4 whitespace-nowrap text-gray-900">{row.title}</td>
@@ -24,10 +22,10 @@ export default async function RequestTableRow({ row }: RequestTableRowProps) {
             row.status === "Abierto"
               ? "bg-green-100 "
               : row.status === "En progreso"
-              ? "bg-yellow-100"
-              : row.status === "Resuelto"
-              ? "bg-blue-100"
-              : "bg-gray-100"
+                ? "bg-yellow-100"
+                : row.status === "Resuelto"
+                  ? "bg-blue-100"
+                  : "bg-gray-100"
           }`}
         >
           {row.status}

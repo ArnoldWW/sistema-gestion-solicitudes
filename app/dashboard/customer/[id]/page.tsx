@@ -14,20 +14,7 @@ async function getRequestById(id: string): Promise<RequestRow | null> {
     return null;
   }
 
-  const raw = res.rows[0] as any;
-
-  return {
-    id: String(raw.id),
-    user_id: raw.user_id ? String(raw.user_id) : "",
-    user_name: raw.user_name ?? null,
-    title: raw.title ?? "",
-    description: raw.description ?? null,
-    status: raw.status ?? "",
-    response: raw.response ?? null,
-    created_at: raw.created_at ? String(raw.created_at) : null,
-    updated_at: raw.updated_at ? String(raw.updated_at) : null,
-    support_id: raw.support_id ? String(raw.support_id) : null
-  };
+  return res.rows[0] as unknown as RequestRow;
 }
 
 type RequestDetailPageProps = {
