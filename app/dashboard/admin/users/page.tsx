@@ -1,3 +1,4 @@
+import type { User } from "@/types";
 import { db } from "@/lib/db";
 import BanUserButton from "@/components/BanUserButton";
 
@@ -11,13 +12,7 @@ async function getAllUsers(role?: string) {
   }
 
   const result = await db.execute({ sql, args });
-  return result.rows as unknown as {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-    banned: number;
-  }[];
+  return result.rows as unknown as User[];
 }
 
 export default async function UsersAdminPage({

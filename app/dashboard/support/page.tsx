@@ -14,20 +14,7 @@ async function getSupportRequests(userId: string): Promise<RequestRow[]> {
     args: [userId]
   });
 
-  const rawRows = result.rows || [];
-
-  return (rawRows as any[]).map((r) => ({
-    id: String(r.id),
-    user_id: String(r.user_id),
-    user_name: r.user_name ?? r.name ?? null,
-    title: r.title ?? "",
-    description: r.description ?? null,
-    status: r.status ?? "",
-    response: r.response ?? null,
-    created_at: r.created_at ? String(r.created_at) : null,
-    updated_at: r.updated_at ? String(r.updated_at) : null,
-    support_id: r.support_id ? String(r.support_id) : null
-  }));
+  return result.rows as unknown as RequestRow[];
 }
 
 export default async function SupportPage() {

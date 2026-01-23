@@ -5,6 +5,14 @@ export type SidebarLink = {
   label: string;
 };
 
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  banned: number;
+};
+
 export type SessionUser = {
   id: string;
   name: string;
