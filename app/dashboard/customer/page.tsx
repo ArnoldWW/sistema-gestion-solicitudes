@@ -1,16 +1,37 @@
 import Link from "next/link";
+import { z } from "zod";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { db } from "@/lib/db";
-import type { RequestRow } from "@/types";
-import RequestTableRow from "@/components/RequestTableRow";
+import FormattedDate from "@/app/components/FormattedDate";
 
-async function getCustomerRequests(userId: string): Promise<RequestRow[]> {
+const CustomerRequestsSchema = z.array(
+  z.object({
+    id: z.string(),
+    title: z.string(),
+    description: z.string(),
+    status: z.string(),
+    response: z.string().nullable(),
+    created_at: z.string().nullable(),
+    updated_at: z.string().nullable()
+  })
+);
+
+async function getCustomerRequests(userId: string) {
   const result = await db.execute({
     sql: "SELECT id, title, description, status, response, created_at, updated_at FROM requests WHERE user_id = ? ORDER BY created_at DESC",
     args: [userId]
   });
 
-  return result.rows as unknown as RequestRow[];
+  const parsed = CustomerRequestsSchema.safeParse(result.rows);
+  if (!parsed.success) {
+    console.error(
+      "Error al validar las solicitudes del cliente:",
+      parsed.error
+    );
+    return [];
+  }
+
+  return parsed.data;
 }
 
 export default async function CustomerRequestsPage() {
@@ -45,38 +66,33 @@ export default async function CustomerRequestsPage() {
     <div>
       <h2 className="mb-4">Mis Solicitudes</h2>
 
-      <div className="block overflow-x-auto bg-white rounded border border-gray-200">
-        <table className="min-w-full divide-y divide-gray-200">
-          {/* --- */}
-          <thead className="bg-gray-50 text-sm">
-            <tr>
-              <th className="px-6 py-3 text-left uppercase tracking-wider">
-                Título
-              </th>
-              <th className="px-6 py-3 text-left uppercase tracking-wider">
-                Descripción
-              </th>
-              <th className="px-6 py-3 text-left uppercase tracking-wider">
-                Estado
-              </th>
+      <ul className="grid grid-cols-1 lg:grid-cols-3 gap-4 w-full">
+        {rows.map((row) => (
+          <li
+            key={row.id}
+            className="p-5 border border-gray-200 rounded-md relative"
+          >
+            <h3>{row.title}</h3>
+            <p className="truncate text-gray-600">{row.description}</p>
+            <p className="text-sm text-gray-500">
+              ACTUALIZADO: <FormattedDate iso={row.updated_at} />
+            </p>
+            <p className="text-sm text-gray-500">
+              CREADO: <FormattedDate iso={row.created_at} />
+            </p>
+            <Link
+              href={`/dashboard/customer/${row.id}`}
+              className="text-blue-500 underline mt-2 inline-block"
+            >
+              Ver detalles
+            </Link>
 
-              <th className="px-6 py-3 text-left uppercase tracking-wider">
-                Fecha de actualización
-              </th>
-
-              <th className="px-6 py-3 text-right uppercase tracking-wider">
-                Acciones
-              </th>
-            </tr>
-          </thead>
-          {/* --- */}
-          <tbody className="bg-white divide-y divide-gray-200">
-            {rows.map((row: RequestRow) => (
-              <RequestTableRow key={row.id} row={row} />
-            ))}
-          </tbody>
-        </table>
-      </div>
+            <span className="absolute top-0 right-0 mt-2 mr-2 px-2 py-1 text-xs rounded-full bg-gray-200 text-gray-800">
+              {row.status}
+            </span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
