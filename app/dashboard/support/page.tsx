@@ -2,7 +2,7 @@ import { getCurrentUser } from "@/lib/getCurrentUser";
 import { db } from "@/lib/db";
 import type { RequestRow } from "@/types";
 import { redirect } from "next/navigation";
-import SupportRequestTableRow from "@/components/SupportRequestTableRow";
+import SupportRequestTableRow from "@/app/components/SupportRequestTableRow";
 
 async function getSupportRequests(userId: string): Promise<RequestRow[]> {
   const result = await db.execute({

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 import { db } from "@/lib/db";
 import type { RequestRow } from "@/types";
-import FormattedDate from "@/components/FormattedDate";
+import FormattedDate from "@/app/components/FormattedDate";
 
 async function getRequestById(id: string): Promise<RequestRow | null> {
   const res = await db.execute({

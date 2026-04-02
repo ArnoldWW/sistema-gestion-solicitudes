@@ -1,5 +1,4 @@
-import Loading from "@/components/Loading";
-import React from "react";
+import Loading from "@/app/components/Loading";
 
 export default function loading() {
   return <Loading />;

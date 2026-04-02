@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import FormattedDate from "@/components/FormattedDate";
+import FormattedDate from "@/app/components/FormattedDate";
 import { RequestRow } from "@/types";
 
 async function getAllRequests(status?: string) {

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { RequestRow } from "@/types";
-import FormattedDate from "@/components/FormattedDate";
+import FormattedDate from "@/app/components/FormattedDate";
 import { getCurrentUser } from "@/lib/getCurrentUser";
 
 interface RequestTableRowProps {

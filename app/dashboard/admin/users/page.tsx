@@ -1,6 +1,6 @@
 import type { User } from "@/types";
 import { db } from "@/lib/db";
-import BanUserButton from "@/components/BanUserButton";
+import BanUserButton from "@/app/components/BanUserButton";
 
 async function getAllUsers(role?: string) {
   let sql = "SELECT id, name, email, role, banned FROM users";

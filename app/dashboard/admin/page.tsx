@@ -1,6 +1,6 @@
 import React from "react";
 import { db } from "@/lib/db";
-import StatsCharts from "@/components/StatsCharts";
+import StatsCharts from "@/app/components/StatsCharts";
 
 async function getUserStats() {
   const result = await db.execute({

@@ -3,8 +3,8 @@ import { getCurrentUser } from "@/lib/getCurrentUser";
 import { redirect } from "next/navigation";
 import { Role, SidebarLink } from "@/types";
 import { logoutUser } from "@/actions/logoutUser";
-import Sidebar from "@/components/Sidebar";
-import DashboardNav from "@/components/DashboardNav";
+import Sidebar from "@/app/components/Sidebar";
+import DashboardNav from "@/app/components/DashboardNav";
 
 const linksByRole: Record<Role, SidebarLink[]> = {
   CLIENTE: [
