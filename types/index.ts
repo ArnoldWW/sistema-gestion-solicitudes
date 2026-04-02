@@ -17,7 +17,7 @@ export type SessionUser = {
   id: string;
   name: string;
   email: string;
-  role: "CLIENTE" | "SOPORTE" | "ADMIN";
+  role: Role;
   iat: number;
   exp: number;
 };
