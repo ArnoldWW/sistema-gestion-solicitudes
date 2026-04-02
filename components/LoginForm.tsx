@@ -30,7 +30,6 @@ export default function LoginForm() {
     startTransition(async () => {
       try {
         const res = await loginUser(email, password);
-        console.log(res.user);
 
         if (!res?.success) {
           throw new Error(res.error);
