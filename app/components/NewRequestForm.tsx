@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { SupportUser } from "@/types";
+import type { SupportUser } from "@/types";
 
 type FormAction = (formData: FormData) => void | Promise<void>;
 

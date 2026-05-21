@@ -2,7 +2,7 @@ import { getCurrentUser } from "@/lib/getCurrentUser";
 import { createRequestAction } from "@/actions/createRequest";
 import NewRequestForm from "@/app/components/NewRequestForm";
 import { db } from "@/lib/db";
-import type { SupportUser } from "@/types";
+import { SupportUserSchema, type SupportUser } from "@/types";
 
 async function getSupportUsers(): Promise<SupportUser[]> {
   const res = await db.execute({
@@ -10,11 +10,9 @@ async function getSupportUsers(): Promise<SupportUser[]> {
     args: ["SOPORTE"]
   });
 
-  return (res.rows || []).map((r: any) => ({
-    id: String(r.id),
-    name: r.name ?? "",
-    email: r.email ?? ""
-  })) as SupportUser[];
+  const supportUsers = SupportUserSchema.array().parse(res.rows);
+
+  return supportUsers;
 }
 
 export default async function NewCustomerRequestPage() {

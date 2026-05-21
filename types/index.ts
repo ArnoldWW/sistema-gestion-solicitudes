@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type Role = "CLIENTE" | "SOPORTE" | "ADMIN";
 
 export type SidebarLink = {
@@ -22,11 +24,12 @@ export type SessionUser = {
   exp: number;
 };
 
-export type SupportUser = {
-  id: string;
-  name: string;
-  email: string;
-};
+export const SupportUserSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string()
+});
+export type SupportUser = z.infer<typeof SupportUserSchema>;
 
 export type RequestRow = {
   id: string;
