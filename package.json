@@ -21,9 +21,6 @@
     "react-hot-toast": "^2.6.0",
     "zod": "^4.3.6"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": ["sharp", "unrs-resolver"]
-  },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
